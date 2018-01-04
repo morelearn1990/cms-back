@@ -5,8 +5,8 @@
         </div>
         <div class="showTime">
             <p>
-                <span>{{timeFormat.year}}</span>年
-                <span>{{timeFormat.month}}</span>月
+                <span>{{timeFormat.year}} </span>年
+                <span>{{timeFormat.month}} </span>月
                 <span>{{timeFormat.date}}</span>日</p>
         </div>
     </div>
@@ -24,7 +24,7 @@ export default {
             var time = this.time;
             return {
                 year: time.getFullYear(),
-                month: time.getMonth(),
+                month: time.getMonth() + 1,
                 date: time.getDate()
             }
         }

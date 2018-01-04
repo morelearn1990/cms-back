@@ -14,7 +14,7 @@ export default {
             if (paths.length === 1 && paths[0].path === '') {
                 paths = [];
             }
-            return paths;
+            return paths;   
         }
     }
 }

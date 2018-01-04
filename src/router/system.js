@@ -14,10 +14,10 @@ export default {
     component: System,
     children: [
         { path: '', name: 'system', meta: { title: '导航' }, component: MenuBar },
-        { path: 'base', name: 'base', meta: { title: '参数设置' }, component: Base },
-        { path: 'user', name: 'user', meta: { title: '用户管理' }, component: User },
-        { path: 'usermodel', name: 'usermodel', meta: { title: '用户权限' }, component: UserModel },
-        { path: 'db', name: 'db', meta: { title: '数据库' }, component: Db },
-        { path: 'log', name: 'log', meta: { title: '日志管理' }, component: Log }
+        { path: 'base', name: 'system-base', meta: { title: '参数设置' }, component: Base },
+        { path: 'user', name: 'system-user', meta: { title: '用户管理' }, component: User },
+        { path: 'usermodel', name: 'system-usermodel', meta: { title: '用户权限' }, component: UserModel },
+        { path: 'db', name: 'system-db', meta: { title: '数据库' }, component: Db },
+        { path: 'log', name: 'system-log', meta: { title: '日志管理' }, component: Log }
     ]
 }

@@ -1,6 +1,6 @@
 <template>
-    <div class="header">
-        <a href="#">
+    <div class="header shadow-1">
+        <a href="#/">
             <i class="iconfont icon-home font30"></i>
         </a>
         <div class="header-menu">
@@ -62,7 +62,6 @@ export default {
   position: relative;
   background-color: #fff;
   padding: 0 20px;
-  box-shadow: 0 2px 5px #666;
   position: relative;
   z-index: 99;
   a {

@@ -10,6 +10,7 @@
     "dependencies": {
         "axios": "^0.17.1",
         "element-ui": "^2.0.10",
+        "mdui": "^0.4.0",
         "mockjs": "^1.0.1-beta3",
         "vue": "^2.5.13",
         "vue-axios": "^2.0.2",

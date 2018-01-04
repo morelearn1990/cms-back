@@ -1,21 +1,25 @@
 <template>
-    <el-row class="layout-main">
-        <m-header></m-header>
-        <el-col :xs="0" :sm="4" :md="3" class="layout-left">
-            <m-nav-menu :isCollapse='isCollapse'></m-nav-menu>
-        </el-col>
-        <el-col :xs="22" :sm="20" :md="21" class="layout-right">
-            <div class="layout-breadcrumb">
-                <m-breadcrumb></m-breadcrumb>
+    <div class="root">
+        <div class="side shadow-4">
+            <m-nav-menu></m-nav-menu>
+        </div>
+        <div class="main">
+          <div class="main-header">
+            <m-header></m-header>
+          </div>
+          <div class="main-body">
+            <div class="main-breadcrumb">
+              <m-breadcrumb></m-breadcrumb>
             </div>
-            <el-col class="layout-content">
-                <router-view></router-view>
-            </el-col>
-            <el-col class="layout-footer">
-                <m-footer></m-footer>
-            </el-col>
-        </el-col>
-    </el-row>
+            <div class="main-content shadow-2">
+              <router-view></router-view>
+            </div>
+          </div>
+          <div class="main-footer">
+            <m-footer></m-footer>
+          </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -27,7 +31,6 @@ import mBreadcrumb from "./components/breadcrumb.vue";
 export default {
   data() {
     return {
-      isCollapse: false
     };
   },
   methods: {},
@@ -37,13 +40,8 @@ export default {
     mNavMenu,
     mBreadcrumb
   },
-  mounted: function() {
-    var _this = this;
-    window.onresize = function() {
-      window.innerWidth < 992
-        ? (_this.isCollapse = true)
-        : (_this.isCollapse = false);
-    };
+  updated: function () {
+    
   }
 };
 </script>
@@ -56,28 +54,48 @@ body {
   color: #333;
 }
 
-.layout-main {
+.root {
   width: 100%;
   height: 100%;
   position: relative;
-  .layout-left {
-    height: calc(~"100% - 50px");
+  display: flex;
+  flex-flow: row nowrap;
+  .side {
+    height: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    z-index: 99;
+    position: relative;
   }
-  .layout-right {
-    height: calc(~"100% - 50px");
-    background-color: #fdfdff;
-    .layout-breadcrumb {
-      height: 40px;
-      padding: 0 10px;
+  .main {
+    height: 100%;
+    background-color: #f1f1f1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    .main-header {
+      height: 50px;
+      z-index: 10;
+      position: relative;
     }
-    .layout-content {
-      height: calc(~"100% - 60px");
+    .main-body {
+      width: 100%;
+      height: calc(~"100% - 80px");
       padding: 0 10px;
       overflow: hidden;
+      .main-breadcrumb {
+        height: 45px;
+      }
+      .main-content {
+        height: calc(~"100% - 48px");
+        overflow: hidden;
+        background-color: #fff;
+        border-radius: 5px;
+      }
     }
-    .layout-footer {
+    .main-footer {
       height: 20px;
     }
+    
   }
 }
 </style>

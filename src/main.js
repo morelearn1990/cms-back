@@ -32,5 +32,5 @@ new Vue({
     el: '#m_cms_app',
     router: router,
     store: store,
-    render: h => h(App)
+    render: h => h(App),
 });
