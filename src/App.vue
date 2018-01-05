@@ -66,6 +66,7 @@ body {
     flex-shrink: 0;
     z-index: 99;
     position: relative;
+    background-color: #6f767c;
   }
   .main {
     height: 100%;

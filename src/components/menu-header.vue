@@ -35,15 +35,16 @@ export default {
 <style lang="less" scoped>
 .nav-header {
     width: 100%; // height: 70px;
-    background-color: #dbdee2;
     padding: 10px 0;
+    background-color: #5f646a;
+    color: #ffd04b;
+    height: 95px;
     .nav-logo {
         font-size: 20px;
         text-align: center;
         margin-bottom: 10px;
     }
     .showTime {
-        color: #333;
         text-align: center;
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <el-menu class="menu-content" unique-opened @select="gotoRouter">
+    <el-menu class="menu-content" unique-opened @select="gotoRouter" background-color="#6f767c" text-color="#fff" active-text-color="#ffd04b">
         <el-submenu index="content">
             <template slot="title">
                 <i class="iconfont icon-text"></i>
@@ -31,8 +31,8 @@
             </template>
             <el-menu-item-group>
                 <el-menu-item index="system/base">基本参数</el-menu-item>
-                <el-menu-item index="system/user">用户管理</el-menu-item>
                 <el-menu-item index="system/usermodel">用户模型</el-menu-item>
+                <el-menu-item index="system/user">用户管理</el-menu-item>
                 <el-menu-item index="system/db">数据库管理</el-menu-item>
                 <el-menu-item index="system/log">日志管理</el-menu-item>
             </el-menu-item-group>
@@ -52,6 +52,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.el-menu{
+    border-right: none;
+}
 .menu-content {
   height: 100%;
   overflow: hidden;
