@@ -1,5 +1,5 @@
 <template>
-    <div class="header shadow-1">
+    <div class="header shadow-0">
         <a href="#/">
             <i class="iconfont icon-home font30"></i>
         </a>

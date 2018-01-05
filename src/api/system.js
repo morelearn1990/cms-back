@@ -7,7 +7,6 @@ export default [{
                 'name': 'baseUrl',
                 'des': '网站根目录',
                 'value': '@domain',
-                'inputComponent': 'Input',
                 'inputType': 'text',
                 'group': '1'
             },
@@ -16,7 +15,6 @@ export default [{
                 'name': 'webName',
                 'des': '网站名称',
                 'value': '@cword(5)',
-                'inputComponent': 'Input',
                 'inputType': 'text',
                 'group': '1'
             },
@@ -25,7 +23,6 @@ export default [{
                 'name': 'powerby',
                 'des': '版权',
                 'value': '@morelearn',
-                'inputComponent': 'Input',
                 'inputType': 'text',
                 'group': '1'
             },
@@ -34,7 +31,6 @@ export default [{
                 'name': 'keywords',
                 'des': '关键词',
                 'value|3-10': '@cword(3,6),',
-                'inputComponent': 'Input',
                 'inputType': 'textarea',
                 'group': '1'
             },
@@ -43,7 +39,6 @@ export default [{
                 'name': 'description',
                 'des': '网站描述',
                 'value': '@csentence(30,100)',
-                'inputComponent': 'Input',
                 'inputType': 'textarea',
                 'group': '1'
             },
@@ -52,7 +47,6 @@ export default [{
                 'name': 'email',
                 'des': '邮件',
                 'value': '@email',
-                'inputComponent': 'Input',
                 'inputType': 'text',
                 'group': '1'
             },
@@ -61,7 +55,6 @@ export default [{
                 'name': 'tellphone',
                 'des': '电话',
                 'value': '123-4567-8910',
-                'inputComponent': 'Input',
                 'inputType': 'text',
                 'group': '1'
             },
@@ -70,7 +63,6 @@ export default [{
                 'name': 'address',
                 'des': '地址',
                 'value': '@csentence(10,20)',
-                'inputComponent': 'Input',
                 'inputType': 'text',
                 'group': '1'
             },
@@ -79,8 +71,7 @@ export default [{
                 'name': 'autoArticlePic',
                 'des': '自动提取第一张图片为缩略图',
                 'value': '@boolean(true)',
-                'inputComponent': 'i-switch',
-                'inputType': '',
+                'inputType': 'bolean',
                 'group': '2'
             },
             {
@@ -88,8 +79,7 @@ export default [{
                 'name': 'autoArticleKeywords',
                 'des': '自动提取关键词',
                 'value': '@boolean(true)',
-                'inputComponent': 'i-switch',
-                'inputType': '',
+                'inputType': 'bolean',
                 'group': '2'
             },
             {
@@ -97,26 +87,15 @@ export default [{
                 'name': 'autoArticleDescription',
                 'des': '自动摘取第一段为摘要',
                 'value': '@boolean(true)',
-                'inputComponent': 'i-switch',
-                'inputType': '',
+                'inputType': 'bolean',
                 'group': '2'
             },
             {
                 'id': '12',
-                'name': 'staticDir',
-                'des': '静态目录',
-                'value': '@string(10,15)',
-                'inputComponent': 'Input',
-                'inputType': '',
-                'group': '3'
-            },
-            {
-                'id': '13',
-                'name': 'makeStatic',
-                'des': '是否生成静态目录',
-                'value': '@boolean(true)',
-                'inputComponent': 'i-switch',
-                'inputType': '',
+                'name': 'autoDescriptionLenght',
+                'des': '自动摘要长度（0-250，0表示不启用）',
+                'value': '@integer(0,250)',
+                'inputType': 'number',
                 'group': '3'
             }
         ]
