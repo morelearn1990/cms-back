@@ -103,24 +103,67 @@ export default [{
     {
         path: '/system/user',
         data: {
-            'list|3-4': [{
+            'userlist|3-4': [{
                 'userId|+1': 0,
+                'userTypeId|1': [0, 1, 2],
                 'userTypeName|1': ['超级管理员', '栏目管理员', '文档管理员'],
-                'userName|1': ['编辑', '逗逼', '高富帅', '屌丝', '成功者'],
-                'password': '@string(8)'
+                'name': '@cname(2,4)',
+                'userName': '@word(5,10)',
             }]
+        }
+    },
+    {
+        path: '/system/user/add',
+        method: 'put',
+        data: {
+            "result": true,
+            "user": {
+                'userId': '@integer(10,20)',
+                'userTypeId|1': [0, 1, 2],
+                'userTypeName|1': ['超级管理员', '栏目管理员', '文档管理员'],
+                'name': '@cname(2,4)',
+                'userName': '@word(5,10)',
+            }
+        }
+    },
+    {
+        path: '/system/user/edit',
+        method: 'post',
+        data: {
+            "result": true,
+            "user": {
+                'userId': '@integer(10,20)',
+                'userTypeId|1': [0, 1, 2],
+                'userTypeName|1': ['超级管理员', '栏目管理员', '文档管理员'],
+                'name': '@cname(2,4)',
+                'userName': '@word(5,10)',
+            }
+        }
+    },
+    {
+        path: '/system/user/delete',
+        method: 'DELETE',
+        data: {
+            "result": true
         }
     },
     {
         path: '/system/usermodel',
         data: {
-            'list|3': [{
+            'usermodellist|3': [{
                 'userTypeId|+1': 0,
                 'userTypeDefault': true,
-                'userTypeName|1': ['超级管理员', '栏目管理员', '文档管理员'],
+                'userTypeName|+1': ['超级管理员', '栏目管理员', '文档管理员'],
                 'userType|1': ['root', 'column', 'archive'],
-                'userTypeRight|1': ['系统设置权限', '栏目权限', '文章权限']
+                'userTypeRight|+1': ['系统设置权限', '栏目权限', '文章权限']
             }]
+        }
+    },
+    {
+        path: '/system/usermodel/delete',
+        method: 'DELETE',
+        data: {
+            "result": true
         }
     },
     {

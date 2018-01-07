@@ -8,7 +8,7 @@ import ElementUI from 'element-ui'
 import './assets/css/normaliz.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/font.css'
-import './assets/css/common.css'
+import './assets/css/common.less'
 
 import App from './App.vue'
 import Routes from './router'

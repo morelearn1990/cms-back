@@ -4,20 +4,20 @@
             <m-nav-menu></m-nav-menu>
         </div>
         <div class="main">
-          <div class="main-header">
-            <m-header></m-header>
-          </div>
-          <div class="main-body">
-            <div class="main-breadcrumb">
-              <m-breadcrumb></m-breadcrumb>
+            <div class="main-header">
+                <m-header></m-header>
             </div>
-            <div class="main-content shadow-2">
-              <router-view></router-view>
+            <div class="main-body">
+                <div class="main-breadcrumb">
+                    <m-breadcrumb></m-breadcrumb>
+                </div>
+                <div class="main-content shadow-2">
+                    <router-view></router-view>
+                </div>
             </div>
-          </div>
-          <div class="main-footer">
-            <m-footer></m-footer>
-          </div>
+            <div class="main-footer">
+                <m-footer></m-footer>
+            </div>
         </div>
     </div>
 </template>
@@ -30,8 +30,7 @@ import mBreadcrumb from "./components/breadcrumb.vue";
 
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   methods: {},
   components: {
@@ -40,9 +39,7 @@ export default {
     mNavMenu,
     mBreadcrumb
   },
-  updated: function () {
-    
-  }
+  updated: function() {}
 };
 </script>
 
@@ -67,6 +64,7 @@ body {
     z-index: 99;
     position: relative;
     background-color: #6f767c;
+    overflow-y: scroll;
   }
   .main {
     height: 100%;
@@ -96,7 +94,6 @@ body {
     .main-footer {
       height: 20px;
     }
-    
   }
 }
 </style>

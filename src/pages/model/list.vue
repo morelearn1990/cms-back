@@ -3,14 +3,14 @@
         <div class="btn-group">
             <el-button type="primary" size="small" @click="modelEdit('new')">新增模型</el-button>
         </div>
-        <el-table ref="multipleTable" :data="modelLists" border stripe style="width: 100%;">
+        <el-table ref="multipleTable" :data="modelLists" border stripe height="table-style" class="table-style">
             <el-table-column type="selection" width="55" align="center"></el-table-column>
             <el-table-column prop="id" label="ID" width="60" align="center"></el-table-column>
             <el-table-column prop="name" label="名称" width="120" align="center"></el-table-column>
             <el-table-column prop="type" label="类型" width="120" align="center"></el-table-column>
             <el-table-column prop="builder" label="创建者" width="120" align="center"></el-table-column>
             <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="" label="操作" width="140" align="center">
+            <el-table-column prop="" label="操作" width="200" align="center">
                 <template slot-scope="scope">
                     <el-button size="small" @click="modelEdit(scope.row.id)">编辑</el-button>
                     <el-button size="small" type="danger" @click="modelDelete(scope.$index,scope.row)">删除</el-button>
@@ -99,11 +99,9 @@ export default {
     height: 40px;
     padding: 5px;
   }
-  .el-table {
+  .table-style {
+    width: 99%;
     height: calc(~"100% - 50px");
-    .el-table__body-wrapper {
-      height: calc(~"100% - 42px");
-    }
   }
 }
 </style>
