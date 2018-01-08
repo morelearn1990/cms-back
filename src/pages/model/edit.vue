@@ -11,12 +11,8 @@
 export default {
     data() {
         return {
-            modelItem: {}
-        }
-    },
-    beforeRouteEnter(to, from, next) {
-        if (to.query.id == 'new') {
-            var modelItem = {
+            modelItem: {},
+            modelItemDefault = {
                 name: {
                     type: 'input',
                     value: '',
@@ -37,6 +33,13 @@ export default {
                     des: ''
                 }
             }
+        }
+    },
+    created:function(){
+
+    },
+    beforeRouteEnter(to, from, next) {
+        if (to.query.id == 'new') {
             next((self) => {
                 self.modelItem = modelItem;
             });

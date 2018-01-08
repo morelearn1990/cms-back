@@ -3,22 +3,35 @@
         <div class="btn-group">
             <el-button type="primary" size="small" @click="modelEdit('new')">新增模型</el-button>
         </div>
-        <el-table ref="multipleTable" :data="modelLists" border stripe height="table-style" class="table-style">
-            <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table ref="multipleTable" :data="modelLists" size="mini" border stripe height="table-style" class="table-style">
             <el-table-column prop="id" label="ID" width="60" align="center"></el-table-column>
             <el-table-column prop="name" label="名称" width="120" align="center"></el-table-column>
             <el-table-column prop="type" label="类型" width="120" align="center"></el-table-column>
             <el-table-column prop="builder" label="创建者" width="120" align="center"></el-table-column>
             <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="" label="操作" width="200" align="center">
+            <el-table-column prop="" label="操作" width="200" align="left">
                 <template slot-scope="scope">
-                    <el-button size="small" @click="modelEdit(scope.row.id)">编辑</el-button>
-                    <el-button size="small" type="danger" @click="modelDelete(scope.$index,scope.row)">删除</el-button>
+                    <el-button size="mini" @click="modelEdit(scope.row.id)">{{scope.row.type == 'default'?'查看':'编辑'}}</el-button>
+                    <el-button size="mini" v-if="scope.row.type != 'default'" type="danger" @click="modelDelete(scope.$index,scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
     </div>
 </template>
+<style lang="less">
+.model-list {
+  height: 100%;
+  padding: 10px;
+  .btn-group {
+    height: 40px;
+    padding: 5px;
+  }
+  .table-style {
+    width: calc(~"100% - 1px");
+    height: calc(~"100% - 50px");
+  }
+}
+</style>
 <script>
 export default {
   data() {
@@ -28,9 +41,25 @@ export default {
       modelLists: []
     };
   },
+  created: function() {
+    var _this = this;
+    _this.axios
+      .get("/model/list")
+      .then(res => {
+        _this.modelLists = res.data.lists;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   methods: {
     modelEdit(id) {
-      this.$router.push("/model/edit?id=" + id);
+      this.$router.push({
+        path: "/model/edit",
+        query: {
+          id
+        }
+      });
     },
     modelDelete(index, row) {
       this.$confirm("此操作将永久删除该模型, 是否继续?", "提示", {
@@ -77,31 +106,7 @@ export default {
           });
         });
     }
-  },
-  beforeRouteEnter(to, from, next) {
-    next(self => {
-      self.axios
-        .get("/model/list")
-        .then(res => {
-          self.modelLists = res.data.lists;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    });
   }
 };
 </script>
-<style lang="less">
-.model-list {
-  height: 100%;
-  .btn-group {
-    height: 40px;
-    padding: 5px;
-  }
-  .table-style {
-    width: 99%;
-    height: calc(~"100% - 50px");
-  }
-}
-</style>
+
