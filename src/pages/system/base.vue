@@ -10,7 +10,7 @@
             <setting-panel :list='group3'></setting-panel>
         </el-tab-pane>
         <el-tab-pane label="新增设置" name="fourth">
-            <add-setting></add-setting>
+            <setting-add></setting-add>
         </el-tab-pane>
     </el-tabs>
 </template>
@@ -27,8 +27,8 @@
     }
 </style>
 <script>
-import settingPanel from '../../components/settingPanel.vue'
-import addSetting from '../../components/addsetting.vue'
+import settingPanel from './settingPanel.vue'
+import settingAdd from './settingAdd.vue'
 export default {
     data() {
         return {
@@ -41,7 +41,7 @@ export default {
     },
     components:{
         settingPanel,
-        addSetting
+        settingAdd
     },
     created: function () {
         var _this = this

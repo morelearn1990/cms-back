@@ -64,7 +64,7 @@ body {
     z-index: 99;
     position: relative;
     background-color: #6f767c;
-    overflow-y: scroll;
+    overflow-y: hidden;
   }
   .main {
     height: 100%;

@@ -7,12 +7,15 @@
         </el-table>
     </div>
 </template>
+<style lang="less" scoped>
+
+</style>
 <script>
 export default {
     data() {
         return {
-            modelItem: {},
-            modelItemDefault = {
+            modelItem: [],
+            modelItemDefault:{
                 name: {
                     type: 'input',
                     value: '',
@@ -37,28 +40,6 @@ export default {
     },
     created:function(){
 
-    },
-    beforeRouteEnter(to, from, next) {
-        if (to.query.id == 'new') {
-            next((self) => {
-                self.modelItem = modelItem;
-            });
-        } else {
-            next((self) => {
-                self.axios.get('/model/edit', {
-                    params: {
-                        id: to.query.id
-                    }
-                }).then((res) => {
-                    self.modelItem = res.data.modelItem
-                }).catch((err) => {
-                    console.log(err)
-                })
-            })
-        }
     }
 }
 </script>
-<style lang="less" scoped>
-
-</style>
