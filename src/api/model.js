@@ -22,11 +22,19 @@ export default [{
     }
 }, {
     path: '/model/article/edit/',
-    type: 'get',
+    method: 'GET',
     query: 'id',
     data: {
-        modelItem: {
-
+        model: {
+            'modelId|+1': 0,
+            'modelName': '@cword(3,5)',
+            'modelDes': '@csentence(10,15)',
+            'isdefault': false,
+            'modelItem|10': [{
+                'varName': '@word(3,5)',
+                'varDes': '@csentence(10,15)',
+                'varType|1': ['text','textArea','number','select','imgUpload','videoUpload','Richtext']
+            }]
         }
     }
 }, {
@@ -39,8 +47,8 @@ export default [{
         }
     }
 }, {
-    path: '/model/article/edit/',
-    type: 'post',
+    path: '/model/article/edit/post',
+    method: 'POST',
     query: 'id',
     data: {
         "result": true
