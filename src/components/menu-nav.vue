@@ -8,7 +8,7 @@
             <el-menu-item index="article">文章管理</el-menu-item>
             <el-menu-item index="discuss">评论管理</el-menu-item>
         </el-submenu>
-        <el-menu-item index="channel">
+        <el-menu-item index="column">
             <i class="iconfont icon-column"></i>
             <span slot="title">栏目管理</span>
         </el-menu-item>

@@ -30,8 +30,9 @@ export default [{
             'modelName': '@cword(3,5)',
             'modelDes': '@csentence(10,15)',
             'isdefault': false,
-            'modelItem|10': [{
-                'varName': '@word(3,5)',
+            'modelItem|15': [{
+                'varName': '@cword(3,5)',
+                'var': '@word(3,5)',
                 'varDes': '@csentence(10,15)',
                 'varType|1': ['text','textArea','number','select','imgUpload','videoUpload','Richtext']
             }]
@@ -39,11 +40,20 @@ export default [{
     }
 }, {
     path: '/model/column/edit/',
-    type: 'get',
+    method: 'GET',
     query: 'id',
     data: {
-        modelItem: {
-
+        model: {
+            'modelId|+1': 0,
+            'modelName': '@cword(3,5)',
+            'modelDes': '@csentence(10,15)',
+            'isdefault': false,
+            'modelItem|15': [{
+                'varName': '@cword(3,5)',
+                'var': '@word(3,5)',
+                'varDes': '@csentence(10,15)',
+                'varType|1': ['text','textArea','number','select','imgUpload','videoUpload','Richtext']
+            }]
         }
     }
 }, {
@@ -54,8 +64,8 @@ export default [{
         "result": true
     }
 }, {
-    path: '/model/column/edit/',
-    type: 'post',
+    path: '/model/column/edit/post',
+    method: 'post',
     query: 'id',
     data: {
         "result": true

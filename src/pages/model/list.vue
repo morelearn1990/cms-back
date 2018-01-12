@@ -1,5 +1,5 @@
 <template>
-    <el-tabs value='first' type="border-card" class="list-tabs">
+    <el-tabs :value='panelSelect' type="border-card" class="list-tabs">
         <el-tab-pane label="文章模型" name="first">
             <list-panel list='article'></list-panel>
         </el-tab-pane>
@@ -26,6 +26,11 @@
     export default {
         components: {
             listPanel
+        },
+        data:function(){
+            return {
+                panelSelect:'first'
+            }
         }
     }
 </script>
