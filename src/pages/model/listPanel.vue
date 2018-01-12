@@ -68,45 +68,47 @@
         });
       },
       modelDelete(index, row) {
-        this.$confirm("此操作将永久删除该模型, 是否继续?", "提示", {
+        var _this = this;
+        _this.$confirm("此操作将永久删除该模型, 是否继续?", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "error"
           })
           .then(() => {
             row.type == "default" ?
-              this.$message({
+              _this.$message({
                 type: "error",
                 message: "默认模型不能被删除"
               }) :
-              this.modelDeleteAxios(index, row.id);
+              _this.modelDeleteAxios(index, row.id);
           })
           .catch(() => {
-            this.$message({
+            _this.$message({
               type: "info",
               message: "已取消删除"
             });
           });
       },
       modelDeleteAxios(index, id) {
-        this.fullscreenLoading = true;
-        this.axios
+        var _this = this;
+        _this.fullscreenLoading = true;
+        _this.axios
           .delete("/model/delete", {
             data: {
               id
             }
           })
           .then(res => {
-            this.modelLists.splice(index, 1);
-            this.fullscreenLoading = false;
-            this.$message({
+            _this.modelLists.splice(index, 1);
+            _this.fullscreenLoading = false;
+            _this.$message({
               type: "success",
               message: "删除成功"
             });
           })
           .catch(res => {
-            this.fullscreenLoading = false;
-            this.$message({
+            _this.fullscreenLoading = false;
+            _this.$message({
               type: "error",
               message: "删除失败"
             });
