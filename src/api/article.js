@@ -1,5 +1,6 @@
 export default [{
     path: '/article/list',
+    method: 'GET',
     data: {
         'articleList|20': [{
             'id|+1': 0,
@@ -25,10 +26,10 @@ export default [{
             'writer': '@cname(2,4)'
         }
     }
-},{
+}, {
     path: '/article/delete',
-    method:"DELETE",
+    method: "DELETE",
     data: {
-        'result':true
+        'result': true
     }
 }]

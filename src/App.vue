@@ -53,6 +53,7 @@ body {
 
 .root {
   width: 100%;
+  min-width: 992px;
   height: 100%;
   position: relative;
   display: flex;
