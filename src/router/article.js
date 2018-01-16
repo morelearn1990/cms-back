@@ -10,6 +10,6 @@ export default {
     children: [
         { path: '', name: 'article', meta: { title: '文章列表' }, component: articleList },
         { path: 'list', name: 'articleList', meta: { title: '文章列表' }, component: articleList },
-        { path: 'edit', name: 'articleEdit', meta: { title: '文章编辑' }, component: articleEdit }
+        { path: 'edit/:id', name: 'articleEdit', meta: { title: '文章编辑' }, component: articleEdit }
     ]
 }
