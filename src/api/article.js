@@ -116,7 +116,7 @@ export default [{
             },{
                 'cname':'标签',
                 'name':'flag',
-                'value':'s',
+                'value':'',
                 'type':'select',
                 'source':[{
                     'value': 'f',
@@ -139,7 +139,7 @@ export default [{
             },{
                 'cname':'栏目名称',
                 'name': 'columnName',
-                'value':'1',
+                'value':'',
                 'type':'select',
                 'source':[{
                     name:'服务',
@@ -195,6 +195,12 @@ export default [{
     method: "POST",
     data: {
         'value':'@dataImage("336x280")'
+    }
+}, {
+    path: '/article/edit/post',
+    method: "POST",
+    data: {
+        'result': true
     }
 }, {
     path: '/article/multiedit',

@@ -18,8 +18,8 @@
                 </div>
             </el-form-item>
             <el-form-item>
-                <el-button type="success">保存</el-button>
-                <el-button>取消</el-button>
+                <el-button type="success" @click="save">保存</el-button>
+                <el-button @click="cancel">取消</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -86,7 +86,31 @@
                 });
         },
         methods: {
-
+            cancel(){
+                this.$router.go(-1);
+            },
+            save(){
+                var _this = this;
+                _this.axios.post('/article/edit/post',{
+                    data:_this.article
+                }).then(res => {
+                    if(res.data.result){
+                        _this.$message({
+                            type:'success',
+                            message:'新增/修改成功'
+                        })
+                        _this.$router.go(-1);
+                    }else{
+                        throw '新增/修改失败'
+                    }
+                }).catch(err => {
+                    _this.err = err.toString();
+                    _this.$message({
+                        type:'error',
+                        message:'新增/修改失败'
+                    })
+                })
+            }
         }
     }
 </script>
