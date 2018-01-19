@@ -4,7 +4,7 @@
       <el-button type="success" size='mini' @click="columnEdit('new')">新增顶级栏目</el-button>
     </div>
     <div class="column-body">
-      <el-tree :data="column" :props="defaultProps" node-key="columnId" :default-expand-all='false' :expand-on-click-node="false" :render-content="renderContent"></el-tree>
+      <el-tree :data="column" accordion :props="defaultProps" node-key="columnId" :default-expand-all='false' :expand-on-click-node="false" :render-content="renderContent"></el-tree>
     </div>
   </div>
 </template>
@@ -22,6 +22,15 @@
     }
     .el-tree-node__content {
       height: 39px;
+    }
+    .node_content{
+      flex: 1; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      font-size: 14px; 
+      padding-right: 8px;
+      // border-bottom: 1px solid #ddd;
     }
   }
 </style>
@@ -89,16 +98,17 @@
       },
       renderContent(h, { node, data, store}) {
         return (
-          <span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;">
+          <span class='node_content'>
             <span>
-              <span class="color-gray">{data.columnName} (ID: {data.columnId})</span>
-              <span class="color-green">[文档: {data.total}]</span>
+              <span class="color-gray">{data.columnName} </span>
+              <span class="color-primary">(ID: {data.columnId}) </span>
+              <span class="color-success">[文档: {data.total}]</span>
             </span>
             <span>
-              <el-button style="font-size: 12px;" type="text" on-click={ () => this.toArticleList(data) }>预览</el-button>
-              <el-button style="font-size: 12px;" type="text" on-click={ () => this.columnEdit('new', data) }>新增子类</el-button>
-              <el-button style="font-size: 12px;" type="text" on-click={ () => this.columnEdit('edit', data) }>修改</el-button>
-              <el-button style="font-size: 12px;" type="text" on-click={ () => this.columnRemove(node, data) }>删除</el-button>
+              <el-button type="text" size='mini' class="color-success" on-click={ () => this.toArticleList(data) }>预览</el-button>
+              <el-button type="text" size='mini' class="color-primary" on-click={ () => this.columnEdit('new', data) }>新增子类</el-button>
+              <el-button type="text" size='mini' class="color-warning" on-click={ () => this.columnEdit('edit', data) }>修改</el-button>
+              <el-button type="text" size='mini' class="color-danger" on-click={ () => this.columnRemove(node, data) }>删除</el-button>
             </span>
           </span>
         );
