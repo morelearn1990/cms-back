@@ -1,15 +1,36 @@
 <template>
     <div class="article-list" v-loading.fullscreen.lock="fullscreenLoading" :element-loading-text="text">
         <div class="btn-group">
+            <el-select v-model="columnId" placeholder="请选择" size='small' @change='changeColumn'>
+                <el-option v-for="item in column" :key="item.columnId" :label="item.columnName" :value="item.columnId"></el-option>
+            </el-select>
             <el-button-group>
-                <el-button type="primary" :plain="type != 'normal'" size="small" @click="update('normal')">发布中文章</el-button>
-                <el-button type="primary" :plain="type != 'draft'" size="small" @click="update('draft')">草稿文章</el-button>
-                <el-button type="primary" :plain="type != 'trash'" size="small" @click="update('trash')">回收站</el-button>
+                <el-button type="primary" :plain="type != 'normal'" size="small" @click="update('normal')">
+                    <span class="hidden-lg-and-up"><i class="iconfont icon-normal font12"></i></span>   
+                    <span class="hidden-md-and-down">正常文章</span>
+                </el-button>
+                <el-button type="primary" :plain="type != 'draft'" size="small" @click="update('draft')">
+                    <span class="hidden-lg-and-up"><i class="iconfont icon-draft font12"></i></span>   
+                    <span class="hidden-md-and-down">草稿文章</span>
+                </el-button>
+                <el-button type="primary" :plain="type != 'trash'" size="small" @click="update('trash')">
+                    <span class="hidden-lg-and-up"><i class="iconfont icon-recyclebin font12"></i></span>
+                    <span class="hidden-md-and-down">回收站</span>
+                </el-button>
             </el-button-group>
             <el-button-group>
-                <el-button type="success" size="small" @click="edit('new')">新增文章</el-button>
-                <el-button type="warning" size="small" @click="MultiEditDialog()">批量修改</el-button>
-                <el-button type="danger" size="small" @click="MultiDelete()">批量删除</el-button>
+                <el-button type="success" size="small" @click="edit('new')">
+                    <span class="hidden-lg-and-up"><i class="iconfont icon-new font12"></i></span>
+                    <span class="hidden-md-and-down">新建文章</span>
+                </el-button>
+                <el-button type="warning" size="small" @click="MultiEditDialog()">
+                    <span class="hidden-lg-and-up"><i class="iconfont icon-edit font12"></i></span>
+                    <span class="hidden-md-and-down">批量编辑</span>
+                </el-button>
+                <el-button type="danger" size="small" @click="MultiDelete()">
+                    <span class="hidden-lg-and-up"><i class="iconfont icon-delete font12"></i></span>
+                    <span class="hidden-md-and-down">批量删除</span>
+                </el-button>
             </el-button-group>
             <el-button-group>
                 <el-input placeholder="请输入搜索内容" size="small" v-model="searchContent" class="input-with-select" @keyup.enter="search">
@@ -67,7 +88,6 @@
             height: calc(~"100% - 40px");
         }
         .el-input {
-            margin-top: 1px;
             width: 200px;
         }
     }
@@ -77,6 +97,20 @@
         data() {
             return {
                 type: "normal",
+                columnId:'',
+                column:[{
+                    columnName:'全部',
+                    columnId:0
+                },{
+                    columnName:'服务',
+                    columnId:1
+                },{
+                    columnName:'案例',
+                    columnId:2
+                },{
+                    columnName:'关于',
+                    columnId:3
+                }],
                 searchContent: "",
                 articleList: [],
                 err: "",
@@ -117,14 +151,23 @@
             };
         },
         created() {
+            this.columnId = parseInt(this.$route.query.columnId) || 0;
+            console.log(this.columnId)
             this.update("normal");
+
         },
         methods: {
+            changeColumn(value){
+                this.update(this.type);
+            },
             update(type) {
                 var _this = this;
                 _this.type = type;
                 _this.axios
-                    .get("/article/list")
+                    .get("/article/list",{
+                        type,
+                        columnId:_this.columnId
+                    })
                     .then(res => {
                         _this.articleList = res.data.articleList;
                         _this.fullscreenLoading = false;

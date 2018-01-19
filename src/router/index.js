@@ -1,11 +1,11 @@
 import Index from '../pages/index/index.vue'
 
 import Discuss from '../pages/discuss/index.vue'
-import Column from '../pages/column/index.vue'
 import Modular from '../pages/modular/index.vue'
 import Statistics from '../pages/statistics/index.vue'
 
 import article from './article.js'
+import column from './column.js'
 
 import model from './model.js'
 import system from './system.js'
@@ -15,7 +15,7 @@ const routers = [
     article,
     model,
     { path: '/discuss', name: 'discuss', meta: { title: '评论管理' }, component: Discuss },
-    { path: '/column', name: 'column', meta: { title: '栏目管理' }, component: Column },
+    column,
     { path: '/modular', name: 'modular', meta: { title: '模块管理' }, component: Modular },
     { path: '/statistics', name: 'statistics', meta: { title: '统计分析' }, component: Statistics },
     system
