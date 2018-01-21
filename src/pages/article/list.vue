@@ -1,39 +1,53 @@
 <template>
     <div class="article-list" v-loading.fullscreen.lock="fullscreenLoading" :element-loading-text="text">
         <div class="btn-group">
-            <el-select v-model="columnId" placeholder="请选择" size='small' @change='changeColumn'>
-                <el-option v-for="item in column" :key="item.columnId" :label="item.columnName" :value="item.columnId"></el-option>
-            </el-select>
+            <el-button-group>
+                <el-select v-model="columnId" placeholder="请选择" size='small' class="column-select" popper-class='column-select-content' @change='changeColumn'>
+                    <el-option v-for="item in column" :key="item.columnId" :label="item.columnName" :value="item.columnId"></el-option>
+                </el-select>
+            </el-button-group>
             <el-button-group>
                 <el-button type="primary" :plain="type != 'normal'" size="small" @click="update('normal')">
-                    <span class="hidden-lg-and-up"><i class="iconfont icon-normal font12"></i></span>   
+                    <span class="hidden-lg-and-up">
+                        <i class="iconfont icon-normal font12"></i>
+                    </span>
                     <span class="hidden-md-and-down">正常文章</span>
                 </el-button>
                 <el-button type="primary" :plain="type != 'draft'" size="small" @click="update('draft')">
-                    <span class="hidden-lg-and-up"><i class="iconfont icon-draft font12"></i></span>   
+                    <span class="hidden-lg-and-up">
+                        <i class="iconfont icon-draft font12"></i>
+                    </span>
                     <span class="hidden-md-and-down">草稿文章</span>
                 </el-button>
                 <el-button type="primary" :plain="type != 'trash'" size="small" @click="update('trash')">
-                    <span class="hidden-lg-and-up"><i class="iconfont icon-recyclebin font12"></i></span>
+                    <span class="hidden-lg-and-up">
+                        <i class="iconfont icon-recyclebin font12"></i>
+                    </span>
                     <span class="hidden-md-and-down">回收站</span>
                 </el-button>
             </el-button-group>
             <el-button-group>
                 <el-button type="success" size="small" @click="edit('new')">
-                    <span class="hidden-lg-and-up"><i class="iconfont icon-new font12"></i></span>
+                    <span class="hidden-lg-and-up">
+                        <i class="iconfont icon-new font12"></i>
+                    </span>
                     <span class="hidden-md-and-down">新建文章</span>
                 </el-button>
                 <el-button type="warning" size="small" @click="MultiEditDialog()">
-                    <span class="hidden-lg-and-up"><i class="iconfont icon-edit font12"></i></span>
+                    <span class="hidden-lg-and-up">
+                        <i class="iconfont icon-edit font12"></i>
+                    </span>
                     <span class="hidden-md-and-down">批量编辑</span>
                 </el-button>
                 <el-button type="danger" size="small" @click="MultiDelete()">
-                    <span class="hidden-lg-and-up"><i class="iconfont icon-delete font12"></i></span>
+                    <span class="hidden-lg-and-up">
+                        <i class="iconfont icon-delete font12"></i>
+                    </span>
                     <span class="hidden-md-and-down">批量删除</span>
                 </el-button>
             </el-button-group>
-            <el-button-group>
-                <el-input placeholder="请输入搜索内容" size="small" v-model="searchContent" class="input-with-select" @keyup.enter="search">
+            <el-button-group style="padding-top: 1px;">
+                <el-input placeholder="请输入搜索内容" size="small" v-model="searchContent" class="hidden-xs-only search-input" @keyup.enter="search">
                     <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
                 </el-input>
             </el-button-group>
@@ -76,259 +90,270 @@
     </div>
 </template>
 <style lang="less">
-    .article-list {
-        width: 100%;
-        height: 100%;
-        padding: 10px;
-        .btn-group {
-            height: 40px;
-        }
-        .table-style {
-            width: 99%;
-            height: calc(~"100% - 40px");
-        }
-        .el-input {
-            width: 200px;
-        }
-    }
+.article-list {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  .btn-group {
+    padding-bottom: 10px;
+  }
+  .table-style {
+    width: 99%;
+    height: calc(~"100% - 40px");
+  }
+  .column-select {
+    width: 100px;
+  }
+  .search-input {
+    width: 150px;
+  }
+}
 </style>
 <script>
-    export default {
-        data() {
-            return {
-                type: "normal",
-                columnId:'',
-                column:[{
-                    columnName:'全部',
-                    columnId:0
-                },{
-                    columnName:'服务',
-                    columnId:1
-                },{
-                    columnName:'案例',
-                    columnId:2
-                },{
-                    columnName:'关于',
-                    columnId:3
-                }],
-                searchContent: "",
-                articleList: [],
-                err: "",
-                fullscreenLoading: true,
-                text: "正在执行。。。",
-                ids: [],
-                MultiEditControl: false,
-                MultiEditValue: {
-                    flag: '',
-                    column: ''
-                },
-                MultiEditValueDefault: {
-                    flag: '',
-                    column: ''
-                },
-                MultiEditField: {
-                    flag: [{
-                        tag: 'f',
-                        name: '幻灯'
-                    }, {
-                        tag: 'r',
-                        name: '推荐'
-                    }, {
-                        tag: 's',
-                        name: '滚动'
-                    }, {
-                        tag: 'n',
-                        name: '普通'
-                    }],
-                    column: [{
-                        id: 1,
-                        name: '服务'
-                    }, {
-                        id: 2,
-                        name: '关于'
-                    }]
-                }
-            };
+export default {
+  data() {
+    return {
+      type: "normal",
+      columnId: "",
+      column: [
+        {
+          columnName: "全部",
+          columnId: 0
         },
-        created() {
-            this.columnId = parseInt(this.$route.query.columnId) || 0;
-            console.log(this.columnId)
-            this.update("normal");
-
+        {
+          columnName: "服务",
+          columnId: 1
         },
-        methods: {
-            changeColumn(value){
-                this.update(this.type);
-            },
-            update(type) {
-                var _this = this;
-                _this.type = type;
-                _this.axios
-                    .get("/article/list",{
-                        type,
-                        columnId:_this.columnId
-                    })
-                    .then(res => {
-                        _this.articleList = res.data.articleList;
-                        _this.fullscreenLoading = false;
-                    })
-                    .catch(err => {
-                        _this.err = err.toString();
-                        _this.fullscreenLoading = false;
-                    });
-            },
-            edit(id) {
-                var _this = this;
-                _this.$router.push({
-                    path: `/article/edit/${id}`
-                });
-            },
-            articleDelete(row) {
-                var _this = this;
-                _this
-                    .$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        type: "error"
-                    })
-                    .then(() => {
-                        _this.deleteAxios([row.id]);
-                    })
-                    .catch(() => {
-                        _this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
-            },
-            deleteAxios(ids) {
-                var _this = this;
-                _this.fullscreenLoading = true;
-                _this.axios
-                    .delete("/article/delete", {
-                        data: {
-                            ids
-                        }
-                    })
-                    .then(res => {
-                        _this.fullscreenLoading = false;
-                        if (res.data.result) {
-                            let arr = _this.articleList.filter(item => {
-                                return ids.indexOf(item.id) == -1;
-                            });
-                            _this.articleList = arr;
-                            _this.$message({
-                                type: "success",
-                                message: "删除成功"
-                            });
-                        } else {
-                            _this.$message({
-                                type: "error",
-                                message: "删除失败"
-                            });
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        _this.fullscreenLoading = false;
-                        _this.$message({
-                            type: "error",
-                            message: "删除失败"
-                        });
-                    });
-            },
-            search() {
-                console.log("nih");
-            },
-            MultiDelete(ids) {
-                var _this = this;
-                if (_this.ids.length > 0) {
-                    _this
-                        .$confirm(`此操作将删除这些文章回收站, 是否继续?`, "提示", {
-                            confirmButtonText: "确定",
-                            cancelButtonText: "取消",
-                            type: "error"
-                        })
-                        .then(() => {
-                            _this.deleteAxios(_this.ids);
-                        })
-                        .catch(() => {
-                            _this.$message({
-                                type: "info",
-                                message: "已取消删除"
-                            });
-                        });
-                    _this.$message({
-                        type: "wraning",
-                        message: "请选择文章"
-                    });
-                }
-
-            },
-            getRow(selection) {
-                let ids = [];
-                selection.forEach(row => {
-                    ids.push(row.id);
-                });
-                this.ids = ids;
-            },
-            MultiEditDialog() {
-                if (this.ids.length > 0) {
-                    this.MultiEditValue = this.MultiEditValueDefault;
-                    this.MultiEditControl = true;
-                } else {
-                    this.$message({
-                        type: "wraning",
-                        message: "请选择文章"
-                    });
-                }
-            },
-            MultiEditCancel() {
-                this.MultiEditValue = this.MultiEditValueDefault;
-                this.MultiEditControl = false;
-            },
-            MultiEdit() {
-                var _this = this;
-                _this.fullscreenLoading = true;
-                _this.axios
-                    .post("/article/multiedit", {
-                        data: {
-                            ids: _this.ids,
-                            MultiEditValue: _this.MultiEditValue
-                        }
-                    })
-                    .then(res => {
-                        _this.fullscreenLoading = false;
-                        if (res.data.result) {
-                            _this.articleList.forEach(item => {
-                                if (_this.ids.indexOf(item.id) != -1) {
-                                    item.column = _this.MultiEditValue.column
-                                    item.flag = _this.MultiEditValue.flag
-                                }
-                            });
-                            _this.MultiEditControl = false;
-                            _this.MultiEditValue = this.MultiEditValueDefault;
-                            _this.$message({
-                                type: "success",
-                                message: "修改成功"
-                            });
-                        } else {
-                            _this.$message({
-                                type: "error",
-                                message: "修改失败"
-                            });
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        _this.fullscreenLoading = false;
-                        _this.$message({
-                            type: "error",
-                            message: "修改失败"
-                        });
-                    });
-
-            }
+        {
+          columnName: "案例",
+          columnId: 2
+        },
+        {
+          columnName: "关于",
+          columnId: 3
         }
+      ],
+      searchContent: "",
+      articleList: [],
+      err: "",
+      fullscreenLoading: true,
+      text: "正在执行。。。",
+      ids: [],
+      MultiEditControl: false,
+      MultiEditValue: {
+        flag: "",
+        column: ""
+      },
+      MultiEditValueDefault: {
+        flag: "",
+        column: ""
+      },
+      MultiEditField: {
+        flag: [
+          {
+            tag: "f",
+            name: "幻灯"
+          },
+          {
+            tag: "r",
+            name: "推荐"
+          },
+          {
+            tag: "s",
+            name: "滚动"
+          },
+          {
+            tag: "n",
+            name: "普通"
+          }
+        ],
+        column: [
+          {
+            id: 1,
+            name: "服务"
+          },
+          {
+            id: 2,
+            name: "关于"
+          }
+        ]
+      }
     };
+  },
+  created() {
+    this.columnId = parseInt(this.$route.query.columnId) || 0;
+    this.update("normal");
+  },
+  methods: {
+    changeColumn(value) {
+      this.update(this.type);
+    },
+    update(type) {
+      var _this = this;
+      _this.type = type;
+      _this.axios
+        .get("/article/list", {
+          type,
+          columnId: _this.columnId
+        })
+        .then(res => {
+          _this.articleList = res.data.articleList;
+          _this.fullscreenLoading = false;
+        })
+        .catch(err => {
+          _this.err = err.toString();
+          _this.fullscreenLoading = false;
+        });
+    },
+    edit(id) {
+      var _this = this;
+      _this.$router.push({
+        path: `/article/edit/${id}`
+      });
+    },
+    articleDelete(row) {
+      var _this = this;
+      _this
+        .$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error"
+        })
+        .then(() => {
+          _this.deleteAxios([row.id]);
+        })
+        .catch(() => {
+          _this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    deleteAxios(ids) {
+      var _this = this;
+      _this.fullscreenLoading = true;
+      _this.axios
+        .delete("/article/delete", {
+          data: {
+            ids
+          }
+        })
+        .then(res => {
+          _this.fullscreenLoading = false;
+          if (res.data.result) {
+            let arr = _this.articleList.filter(item => {
+              return ids.indexOf(item.id) == -1;
+            });
+            _this.articleList = arr;
+            _this.$message({
+              type: "success",
+              message: "删除成功"
+            });
+          } else {
+            _this.$message({
+              type: "error",
+              message: "删除失败"
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          _this.fullscreenLoading = false;
+          _this.$message({
+            type: "error",
+            message: "删除失败"
+          });
+        });
+    },
+    search() {
+      console.log("nih");
+    },
+    MultiDelete() {
+      var _this = this;
+      _this.ids.length > 0
+        ? _this
+            .$confirm(`此操作将删除这些文章回收站, 是否继续?`, "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "error"
+            })
+            .then(() => {
+              _this.deleteAxios(_this.ids);
+            })
+            .catch(() => {
+              _this.$message({
+                type: "info",
+                message: "已取消删除"
+              });
+            })
+        : _this.$message({
+            type: "wraning",
+            message: "请选择文章"
+          });
+    },
+    getRow(selection) {
+      let ids = [];
+      selection.forEach(row => {
+        ids.push(row.id);
+      });
+      this.ids = ids;
+    },
+    MultiEditDialog() {
+      if (this.ids.length > 0) {
+        this.MultiEditValue = this.MultiEditValueDefault;
+        this.MultiEditControl = true;
+      } else {
+        this.$message({
+          type: "wraning",
+          message: "请选择文章"
+        });
+      }
+    },
+    MultiEditCancel() {
+      this.MultiEditValue = this.MultiEditValueDefault;
+      this.MultiEditControl = false;
+    },
+    MultiEdit() {
+      var _this = this;
+      _this.fullscreenLoading = true;
+      _this.axios
+        .post("/article/multiedit", {
+          data: {
+            ids: _this.ids,
+            MultiEditValue: _this.MultiEditValue
+          }
+        })
+        .then(res => {
+          _this.fullscreenLoading = false;
+          if (res.data.result) {
+            _this.articleList.forEach(item => {
+              if (_this.ids.indexOf(item.id) != -1) {
+                item.column = _this.MultiEditValue.column;
+                item.flag = _this.MultiEditValue.flag;
+              }
+            });
+            _this.MultiEditControl = false;
+            _this.MultiEditValue = this.MultiEditValueDefault;
+            _this.$message({
+              type: "success",
+              message: "修改成功"
+            });
+          } else {
+            _this.$message({
+              type: "error",
+              message: "修改失败"
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          _this.fullscreenLoading = false;
+          _this.$message({
+            type: "error",
+            message: "修改失败"
+          });
+        });
+    }
+  }
+};
 </script>

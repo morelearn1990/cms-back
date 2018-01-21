@@ -1,5 +1,8 @@
 <template>
     <div class="header shadow-0">
+        <a @click="menuSwitchSub">
+            <i class="iconfont font30" :class="isCollapse?'icon-menu-close':'icon-menu-open'"></i>
+        </a>
         <a href="#/">
             <i class="iconfont icon-home font30"></i>
         </a>
@@ -24,10 +27,14 @@
 </template>
 <script>
 export default {
+  props: ["isCollapse"],
   data() {
     return {};
   },
   methods: {
+    menuSwitchSub() {
+      this.$emit("menuSwitch");
+    },
     adminMenu(command) {
       command == "show"
         ? this.$router.push("/system/user?id=" + this.user)
