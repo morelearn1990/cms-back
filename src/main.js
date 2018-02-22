@@ -22,9 +22,10 @@ Vue.use(Vuex)
 Vue.use(VueAxios, Axios);
 
 const router = new VueRouter({
-    // model:history,
+    model: history,
     routes: Routes
 });
+
 const store = new Vuex.Store({
 
 });
