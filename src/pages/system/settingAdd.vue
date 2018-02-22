@@ -72,7 +72,7 @@ export default {
       var _this = this;
       _this.loading = true;
       _this.axios
-        .put("/system/base/add")
+        .post("/system/base/add")
         .then(res => {
           _this.loading = false;
           _this.$message({

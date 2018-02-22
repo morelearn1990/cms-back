@@ -60,7 +60,7 @@ export default [{
                 'type': 'text'
             }, {
                 'cname': 'SEO关键词',
-                'name': 'publicDate',
+                'name': 'keywords',
                 'value': '@cword()',
                 'type': 'text'
             },
