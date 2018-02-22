@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import Axios from 'axios'
 import VueAxios from 'vue-axios'
 import ElementUI from 'element-ui'
+
 import './assets/css/normaliz.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css';
@@ -34,5 +35,6 @@ new Vue({
     el: '#m_cms_app',
     router: router,
     store: store,
-    render: h => h(App),
+    components: { App },
+    template: '<App/>'
 });
