@@ -3,7 +3,7 @@
         <a @click="menuSwitchSub">
             <i class="iconfont font30" :class="isCollapse?'icon-menu-close':'icon-menu-open'"></i>
         </a>
-        <a href="#/">
+        <a href="/admin/">
             <i class="iconfont icon-home font30"></i>
         </a>
         <div class="header-menu">
