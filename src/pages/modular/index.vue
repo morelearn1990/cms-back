@@ -1,7 +1,9 @@
 <template>
-    <div class="modular">
-        后期开发
-    </div>
+    <app-layout>
+        <div class="modular" slot="content">
+            后期开发
+        </div>
+    </app-layout>
 </template>
 <style lang="less" scoped>
 .modular {
@@ -9,7 +11,12 @@
 }
 </style>
 <script>
-export default {};
+import appLayout from "@/components/layout.vue"
+export default {
+    components:{
+        appLayout
+    }
+}
 </script>
 
     
