@@ -31,6 +31,12 @@ const router = new VueRouter({
     routes: Routes
 });
 
+router.beforeEach((to, from, next) => {
+    // 改变网页 title
+    document.title = to.meta.title + ' CMS系统管理后台'
+    next()
+})
+
 const store = new Vuex.Store({
 
 });
