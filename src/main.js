@@ -8,9 +8,12 @@ import ElementUI from 'element-ui'
 
 import './assets/css/normaliz.css'
 import 'element-ui/lib/theme-chalk/index.css'
-import 'element-ui/lib/theme-chalk/display.css';
+import 'element-ui/lib/theme-chalk/display.css'
 import './assets/css/font.css'
 import './assets/css/common.less'
+import '../node_modules/quill/dist/quill.core.css'
+import '../node_modules/quill/dist/quill.snow.css'
+import '../node_modules/quill/dist/quill.bubble.css'
 
 import App from './App.vue'
 import Routes from './router'
@@ -23,7 +26,8 @@ Vue.use(Vuex)
 Vue.use(VueAxios, Axios);
 
 const router = new VueRouter({
-    model: history,
+    mode: 'history',
+    base: '/admin/',
     routes: Routes
 });
 

@@ -37,9 +37,6 @@
                 min-width: 300px;
             }
         }
-        @import url('/node_modules/quill/dist/quill.core.css');
-        @import url('/node_modules/quill/dist/quill.snow.css');
-        @import url('/node_modules/quill/dist/quill.bubble.css');
         .richtext{
             .ql-picker-label> svg{
                 position: absolute;
