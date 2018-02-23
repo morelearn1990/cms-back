@@ -3,6 +3,7 @@ import Index from '../pages/index/index.vue'
 import Discuss from '../pages/discuss/index.vue'
 import Modular from '../pages/modular/index.vue'
 import Statistics from '../pages/statistics/index.vue'
+import Login from '../pages/login/index.vue'
 
 import article from './article.js'
 import column from './column.js'
@@ -12,6 +13,7 @@ import system from './system.js'
 
 const routers = [
     { path: '/', name: 'index', meta: { title: '首页' }, component: Index },
+    { path: '/login', name: 'login', meta: { title: '登陆页' }, component: Login },
     article,
     model,
     { path: '/discuss', name: 'discuss', meta: { title: '评论管理' }, component: Discuss },
