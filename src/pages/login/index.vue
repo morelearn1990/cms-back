@@ -45,9 +45,9 @@
     .login-bg{
         width: 100%;
         height: 60%;
-        background: linear-gradient(to bottom, #6cacf5 0%,#fff 100%);
+        background: linear-gradient(to bottom, #2f7dd6 0%,#fff 100%);
         .ripple-common{
-            background-color: rgb(108, 172, 245);
+            background-color: rgb(46, 121, 207);
             width: 800px;
             height: 800px;
             position: absolute;
@@ -115,6 +115,7 @@
 </style>
 
 <script>
+import  hex_sha1  from '@/utils/sha1.js'
 export default {
     data(){
         return {
@@ -129,12 +130,33 @@ export default {
                 password:[
                     { required: true, message: '请输入密码', trigger: 'blur' }
                 ]
-            }
+            },
+            err:''
         }
     },
     methods:{
         login(){
-            console.log(this.data)
+            if(this.data.account!='' && this.data.password!=''){
+                this.toLogin();
+            }
+        },
+        toLogin(){
+            let _this = this
+            let pwd_sha = hex_sha1(_this.data.password)
+            let loginParam = {
+                account: _this.data.username,
+                pwd_sha
+            }
+            _this.axios.get('/login/in').then(res => {
+                if(res.data.code == 1){
+                    //如果登录成功则保存登录状态并设置有效期   
+                    let expireDays = 1000 * 60 * 60 * 24 * 15;
+                    _this.setCookie('session', res.data.session, expireDays);
+                    _this.$router.push('/'); 
+                }
+            }).catch(err => {
+                _this.err = err.toString()
+            })
         }
     }
 }

@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import Axios from 'axios'
 import VueAxios from 'vue-axios'
 import ElementUI from 'element-ui'
+import Cookie from './plugins/cookies'
 
 import './assets/css/normaliz.css'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -24,6 +25,7 @@ Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VueAxios, Axios);
+Vue.use(Cookie)
 
 const router = new VueRouter({
     mode: 'history',
@@ -37,14 +39,25 @@ router.beforeEach((to, from, next) => {
     next()
 })
 
-const store = new Vuex.Store({
-
-});
+const store = new Vuex.Store(Store);
 
 new Vue({
     el: '#m_cms_app',
     router: router,
     store: store,
     components: { App },
-    template: '<App/>'
+    template: '<App/>',
+    watch: {
+        "$route": 'checkLogined'
+    },
+    created() {
+        this.checkLogined()
+    },
+    methods: {
+        checkLogined() {
+            if (!this.getCookie('session') && this.$route.path !== '/login') {
+                this.$router.push('/login');
+            }
+        }
+    }
 });

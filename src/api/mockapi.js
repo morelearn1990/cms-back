@@ -4,6 +4,7 @@ import system from './system.js'
 import article from './article.js'
 import model from './model.js'
 import column from './column.js'
+import login from './login.js'
 
 
 function addToMock(lists) {
@@ -16,5 +17,6 @@ addToMock(system);
 addToMock(article);
 addToMock(model);
 addToMock(column);
+addToMock(login);
 
 export default Mock
