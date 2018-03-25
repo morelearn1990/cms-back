@@ -13,7 +13,7 @@
                 <span>变量描述</span>
             </el-col>
             <el-col :span='12' class="input-control">
-                <el-input v-model="des" placeholder="请输入变量描述" size="small"></el-input>
+                <el-input v-model="description" placeholder="请输入变量描述" size="small"></el-input>
             </el-col>
         </el-row>
         <el-row class="input-group">
@@ -21,10 +21,10 @@
                 <span>变量类型</span>
             </el-col>
             <el-col :span='12' class="input-control">
-                <el-radio-group v-model="inputType" size="small">
+                <el-radio-group v-model="inputType" size="small" @change="typeChange">
                     <el-radio label="text">文本</el-radio>
                     <el-radio label="textarea">多行文本</el-radio>
-                    <el-radio label="bolean">布尔(Y/N)</el-radio>
+                    <el-radio label="boolean">布尔(Y/N)</el-radio>
                     <el-radio label="number">数字</el-radio>
                 </el-radio-group>
             </el-col>
@@ -34,7 +34,13 @@
                 <span>变量值</span>
             </el-col>
             <el-col :span='12' class="input-control">
-                <el-input v-model="value" placeholder="请输入变量值" size="small"></el-input>
+                <el-input v-if="inputType=='text'" v-model="value" placeholder="请输入变量值" size="small"></el-input>
+                <el-input v-if="inputType=='textarea'" type="textarea" v-model="value" placeholder="请输入变量值" size="small"></el-input>
+                <el-radio-group v-if="inputType=='bolean'" v-model="value">
+                    <el-radio :label="true">Y</el-radio>
+                    <el-radio :label="false">N</el-radio>
+                </el-radio-group>
+                <el-input-number v-if="inputType == 'number'" v-model="value"></el-input-number>
             </el-col>
         </el-row>
         <el-row class="input-group">
@@ -60,8 +66,8 @@ export default {
   data: function() {
     return {
       name: "",
-      des: "",
-      inputType: "",
+      description: "",
+      inputType: "text",
       value: "",
       group: "",
       loading: false
@@ -69,31 +75,37 @@ export default {
   },
   methods: {
     save: function() {
-      var _this = this;
-      _this.loading = true;
-      _this.axios
-        .post("/system/base/add")
-        .then(res => {
-          _this.loading = false;
-          _this.$message({
-            message: "保存成功",
-            type: "success"
-          });
-        })
-        .catch(err => {
-          _this.loading = false;
-          _this.$message({
-            message: "保存失败，请联系管理员",
-            type: "error"
-          });
-        });
+      let data = {
+        name: this.name,
+        description: this.description,
+        inputType: this.inputType,
+        value: this.value,
+        group: this.group
+      };
+      this.loading = true;
+      this.$emit("create", data);
+      this.loading = false;
+      this.reset();
     },
     reset: function() {
       this.name = "";
-      this.des = "";
-      this.inputType = "";
+      this.description = "";
+      this.inputType = "text";
       this.value = "";
       this.group = "";
+    },
+    typeChange(value) {
+      switch (value) {
+        case "boolean":
+          this.value = true;
+          break;
+        case "number":
+          this.value = 0;
+          break;
+        default:
+          this.value = "";
+          break;
+      }
     }
   }
 };
@@ -104,7 +116,7 @@ export default {
   min-width: 800px;
   height: 100%;
   padding: 20px 10px;
-
+  overflow-y: scroll;
   .text-center {
     text-align: center;
   }
