@@ -1,10 +1,10 @@
 <template>
     <div class="user">
         <el-table :data="userlist" height="table-style" stripe border size='mini' class="table-style">
-            <el-table-column prop="userId" label="ID" width="50"></el-table-column>
-            <el-table-column prop="name" label="用户姓名" min-width="100"></el-table-column>
-            <el-table-column prop="userName" label="登录名" min-width="100"></el-table-column>
-            <el-table-column prop="userTypeName" label="用户类型" min-width="100"></el-table-column>
+            <el-table-column type="index" label="序号" min-width="60"></el-table-column>
+            <el-table-column prop="name" label="登录名" min-width="100"></el-table-column>
+            <el-table-column prop="cname" label="用户名" min-width="100"></el-table-column>
+            <el-table-column prop="model.cname" label="用户模型" min-width="100"></el-table-column>
             <el-table-column label="操作" width="250">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="userEdit(scope.$index,scope.row)">编辑</el-button>
@@ -15,30 +15,30 @@
         <div class="btn-row">
             <el-button type="primary" size='mini' @click="userAdd()">新增</el-button>
         </div>
-        <el-dialog title="编辑用户模型" :visible.sync="editing">
-            <el-row class="input-group">
-                <el-col :span='6' class="input-label">
-                    <span>姓名</span>
-                </el-col>
-                <el-col :span='12' class="input-control">
-                    <el-input v-model="edit.name" placeholder="请输入用户姓名"></el-input>
-                </el-col>
-            </el-row>
+        <el-dialog title="编辑用户" :visible.sync="editing">
             <el-row class="input-group">
                 <el-col :span='6' class="input-label">
                     <span>登录名</span>
                 </el-col>
                 <el-col :span='12' class="input-control">
-                    <el-input v-model="edit.userName" placeholder="请输入用户登录名"></el-input>
+                    <el-input v-model="edit.name" placeholder="请输入登录名"></el-input>
                 </el-col>
             </el-row>
             <el-row class="input-group">
                 <el-col :span='6' class="input-label">
-                    <span>用户类型</span>
+                    <span>姓名</span>
                 </el-col>
                 <el-col :span='12' class="input-control">
-                    <el-select v-model="edit.userTypeId" placeholder="请选择用户类型">
-                        <el-option v-for="item in userType" :key="item.userTypeId" :label="item.userTypeName" :value="item.userTypeId"></el-option>
+                    <el-input v-model="edit.cname" placeholder="请输入用户名"></el-input>
+                </el-col>
+            </el-row>
+            <el-row class="input-group">
+                <el-col :span='6' class="input-label">
+                    <span>用户模型</span>
+                </el-col>
+                <el-col :span='12' class="input-control">
+                    <el-select v-model="edit.model" placeholder="请选择用户类型">
+                        <el-option v-for="item in userModel" :key="item._id" :label="item.cname" :value="item._id"></el-option>
                     </el-select>
                 </el-col>
             </el-row>
@@ -72,34 +72,23 @@ export default {
       err: "",
       edit: {},
       editDefault: {
-        userId: "",
         name: "",
-        userName: "",
-        userTypeId: ""
+        cname: "",
+        model: ""
       },
       index: null,
-      userType: [],
+      userModel: [],
       editing: false
     };
   },
   created: function() {
     var _this = this;
-    _this.axios
-      .get("/system/user")
-      .then(res => {
-        _this.userlist = res.data.userlist;
+    _this.$axios_wrapper('users.list').then(res => {
+        _this.userlist = res.data.userDocs;
       })
-      .catch(err => {
-        _this.err = err.toString();
-      });
-    _this.axios
-      .get("/system/usermodel")
-      .then(res => {
-        _this.userType = res.data.usermodellist;
+    _this.$axios_wrapper('usermodels.list').then(res => {
+        _this.userModel = res.data.userModelDocs;
       })
-      .catch(err => {
-        _this.err = err.toString();
-      });
   },
   methods: {
     userEdit(index, row) {
@@ -117,60 +106,41 @@ export default {
       this.index = null;
     },
     userChange() {
-      console.log("aa");
       var _this = this;
-      _this.edit.userId == ""
-        ? _this.axios
-            .put("/system/user/add", _this.edit)
+      _this.edit._id ? _this.$axios_wrapper('users.update',_this.edit)
             .then(res => {
               if (res.data.result == true) {
-                _this.edit = editDefault;
-                _this.$message({
-                  type: "success",
-                  message: "新增成功~~"
-                });
-                _this.userlist.push(res.data.user);
-                this.editing = false;
-              } else {
-                _this.$message({
-                  type: "error",
-                  message: "新增失败~~"
-                });
-              }
-            })
-            .catch(err => {
-              _this.err = err.toString();
-              _this.$message({
-                type: "error",
-                message: "新增失败~~"
-              });
-            })
-        : _this.axios
-            .post("/system/user/edit", _this.edit)
-            .then(res => {
-              if (res.data.result == true) {
-                _this.edit = editDefault;
+                _this.edit = _this.editDefault;
                 _this.$message({
                   type: "success",
                   message: "编辑成功~~"
                 });
                 _this.userlist.splice(_this.index, 1, res.data.user);
                 _this.index = null;
-                this.editing = false;
+                _this.editing = false;
               } else {
                 _this.$message({
                   type: "error",
-                  message: "编辑失败~~"
+                  message: `编辑失败~~错误原因:${res.data.message}`
+                });
+              }
+            }):_this.$axios_wrapper('users.create',_this.edit)
+            .then(res => {
+              if (res.data.result == true) {
+                _this.edit = _this.editDefault;
+                _this.$message({
+                  type: "success",
+                  message: "新增成功~~"
+                });
+                _this.userlist.push(res.data.userDoc);
+                _this.editing = false;
+              } else {
+                _this.$message({
+                  type: "error",
+                  message: `新增失败~~失败原因：${res.data.message}`
                 });
               }
             })
-            .catch(err => {
-              _this.err = err.toString();
-              _this.$message({
-                type: "error",
-                message: "新增失败~~"
-              });
-            });
     },
     userDelete(index, row) {
       var _this = this;
@@ -181,18 +151,16 @@ export default {
           type: "warning"
         })
         .then(() => {
-          _this.axios
-            .delete("/system/user/delete", {
-              userTypeId: row.userId
-            })
+          _this.$axios_wrapper('users.distory',{_id:row._id})
             .then(res => {
-              res.data.result != true || _this.userlist.splice(index, 1);
-              _this.$message({ type: "success", message: "删除成功~~" });
+              res.data.result == true ?(()=>{
+                  _this.userlist.splice(index, 1);
+                  _this.$message({ type: "success", message: "删除成功~~" });
+              })() :(()=>{
+                  _this.$message({ type: "error", message: `删除失败~~失败原因：${res.data.message}` });
+              })()
+              
             })
-            .catch(err => {
-              _this.err = err.toString();
-              _this.$message({ type: "error", message: "发生错误，请联系查找bug~~" });
-            });
         })
         .catch(() => {
           _this.$message({ type: "error", message: "已经取消~~" });
