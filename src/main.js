@@ -1,11 +1,13 @@
 // import dependencies
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Vuex from 'vuex'
+// import Vuex from 'vuex'
 import Axios from 'axios'
 import VueAxios from 'vue-axios'
 import ElementUI from 'element-ui'
-import Cookie from './plugins/cookies'
+// import Cookie from './plugins/cookies'
+
+import axios from './plugins/axios'
 
 import './assets/css/normaliz.css'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -18,14 +20,20 @@ import '../node_modules/quill/dist/quill.bubble.css'
 
 import App from './App.vue'
 import Routes from './router'
-import Store from './store'
-import Mock from './api/mockapi.js'
+// import Store from './store'
+// import Mock from './api/mockapi.js'
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
-Vue.use(Vuex)
+    // Vue.use(Vuex)
 Vue.use(VueAxios, Axios);
-Vue.use(Cookie)
+// Vue.use(Cookie)
+Vue.use(axios)
+
+Vue.axios.defaults.baseURL = 'http://localhost:7001';
+Vue.axios.defaults.headers.post['Content-Type'] = 'application/json';
+Vue.axios.defaults.headers.put['Content-Type'] = 'application/json';
+Vue.axios.defaults.headers.delete['Content-Type'] = 'application/json';
 
 const router = new VueRouter({
     mode: 'history',
@@ -39,25 +47,25 @@ router.beforeEach((to, from, next) => {
     next()
 })
 
-const store = new Vuex.Store(Store);
+// const store = new Vuex.Store(Store);
 
 new Vue({
     el: '#m_cms_app',
     router: router,
-    store: store,
+    // store: store,
     components: { App },
     template: '<App/>',
     watch: {
-        "$route": 'checkLogined'
+        // "$route": 'checkLogined'
     },
     created() {
-        this.checkLogined()
+        // this.checkLogined()
     },
     methods: {
-        checkLogined() {
-            if (!this.getCookie('session') && this.$route.path !== '/login') {
-                this.$router.push('/login');
-            }
-        }
+        // checkLogined() {
+        //     if (!this.getCookie('session') && this.$route.path !== '/login') {
+        //         this.$router.push('/login');
+        //     }
+        // }
     }
 });
