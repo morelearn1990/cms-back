@@ -41,25 +41,16 @@ export default {
         : command == "signOut" ? this.signOut() : "";
     },
     signOut(path) {
-      let _this = this
-      _this.$confirm("是否退出登录？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-          _this.axios.get('/login/out').then(res => {
-              res.data.code == 1 ? (() => {
-                _this.delCookie('session');
-                _this.$message({
-                  type: "success",
-                  message: "退出成功"
-                })
-                _this.$router.push('/login')
-              })():_this.$message({
-                type: "error",
-                message: "退出失败"
-              });
-          })
+      let _this = this;
+      _this
+        .$confirm("是否退出登录？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+        .then(() => {
+          localStorage.removeItem("auth");
+          _this.$router.push("/login");
         })
         .catch(() => {
           _this.$message({
