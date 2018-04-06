@@ -1,30 +1,30 @@
 <template>
-    <div class="main">
-        <div class="login-box shadow-3">
-            <div class="login-bg">
-                <div class="ripple-common ripple-unique1"></div>
-                <div class="ripple-common ripple-unique2"></div>
-                <div class="ripple-common ripple-unique3"></div>
-                <div class="ripple-common ripple-unique4"></div>
-                <div class="login-title">
-                    <h1>CMS 后台管理系统</h1>
-                </div>
-            </div>
-            <div class="login-input">
-                <el-form :model="data" :rules="rules" label-width="0px">
-                    <el-form-item prop="username">
-                        <el-input v-model="data.username" placeholder="用户名"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="password">
-                        <el-input v-model="data.password" type="password" placeholder="密码"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button class="login-btn" type="primary" @click='login'>登陆</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
+  <div class="main">
+    <div class="login-box shadow-3">
+      <div class="login-bg">
+        <div class="ripple-common ripple-unique1"></div>
+        <div class="ripple-common ripple-unique2"></div>
+        <div class="ripple-common ripple-unique3"></div>
+        <div class="ripple-common ripple-unique4"></div>
+        <div class="login-title">
+          <h1>CMS 后台管理系统</h1>
         </div>
+      </div>
+      <div class="login-input">
+        <el-form :model="data" :rules="rules" label-width="0px">
+          <el-form-item prop="username">
+            <el-input v-model="data.username" placeholder="用户名"></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input v-model="data.password" type="password" placeholder="密码"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button class="login-btn" type="primary" @click='login'>登陆</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
+  </div>
 </template>
 <style lang="less" scoped>
 .main {
@@ -147,7 +147,6 @@ export default {
     },
     toLogin() {
       let _this = this;
-      //   let password_sha = hex_sha1(_this.data.password);
       let loginParam = {
         username: _this.data.username,
         password: _this.data.password,

@@ -1,93 +1,92 @@
 <template>
-    <div class="article-list" v-loading.fullscreen.lock="fullscreenLoading" :element-loading-text="text">
-        <div class="btn-group">
-            <el-button-group>
-                <el-select v-model="columnId" placeholder="请选择" size='small' class="column-select" popper-class='column-select-content' @change='changeColumn'>
-                    <el-option v-for="item in column" :key="item.columnId" :label="item.columnName" :value="item.columnId"></el-option>
-                </el-select>
-            </el-button-group>
-            <el-button-group>
-                <el-button type="primary" :plain="type != 'normal'" size="small" @click="update('normal')">
-                    <span class="hidden-lg-and-up">
-                        <i class="iconfont icon-normal font12"></i>
-                    </span>
-                    <span class="hidden-md-and-down">正常文章</span>
-                </el-button>
-                <el-button type="primary" :plain="type != 'draft'" size="small" @click="update('draft')">
-                    <span class="hidden-lg-and-up">
-                        <i class="iconfont icon-draft font12"></i>
-                    </span>
-                    <span class="hidden-md-and-down">草稿文章</span>
-                </el-button>
-                <el-button type="primary" :plain="type != 'trash'" size="small" @click="update('trash')">
-                    <span class="hidden-lg-and-up">
-                        <i class="iconfont icon-recyclebin font12"></i>
-                    </span>
-                    <span class="hidden-md-and-down">回收站</span>
-                </el-button>
-            </el-button-group>
-            <el-button-group>
-                <el-button type="success" size="small" @click="edit('new')">
-                    <span class="hidden-lg-and-up">
-                        <i class="iconfont icon-new font12"></i>
-                    </span>
-                    <span class="hidden-md-and-down">新建文章</span>
-                </el-button>
-                <el-button type="warning" size="small" @click="MultiEditDialog()">
-                    <span class="hidden-lg-and-up">
-                        <i class="iconfont icon-edit font12"></i>
-                    </span>
-                    <span class="hidden-md-and-down">批量编辑</span>
-                </el-button>
-                <el-button type="danger" size="small" @click="MultiDelete()">
-                    <span class="hidden-lg-and-up">
-                        <i class="iconfont icon-delete font12"></i>
-                    </span>
-                    <span class="hidden-md-and-down">批量删除</span>
-                </el-button>
-            </el-button-group>
-            <el-button-group style="padding-top: 1px;">
-                <el-input placeholder="请输入搜索内容" size="small" v-model="searchContent" class="hidden-xs-only search-input" @keyup.enter="search">
-                    <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-                </el-input>
-            </el-button-group>
-        </div>
-        <el-dialog title="批量修改" :visible.sync="MultiEditControl" width="370px" center>
-            <div>
-                <el-form ref="form" label-width="80px">
-                    <el-form-item label="文章标签">
-                        <el-select v-model="MultiEditValue.flag">
-                            <el-option v-for="item in MultiEditField.flag" :key="item.tag" :label="item.name" :value="item.tag"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="栏目">
-                        <el-select v-model="MultiEditValue.column">
-                            <el-option v-for="item in MultiEditField.column" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-form>
-            </div>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="MultiEditCancel">取 消</el-button>
-                <el-button type="primary" @click="MultiEdit">确 定</el-button>
-            </span>
-        </el-dialog>
-        <el-table ref="multipleTable" :data="articleList" size="mini" border stripe height="table-style" class="table-style" @selection-change="getRow">
-            <el-table-column type="selection" width="40" align="left"></el-table-column>
-            <el-table-column prop="id" label="ID" width="50" align="left"></el-table-column>
-            <el-table-column prop="title" label="文章标题" min-width="20" align="left" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="flag" label="标签" min-width="10" align="left"></el-table-column>
-            <el-table-column prop="publicDate" label="发布时间" min-width="15" align="left"></el-table-column>
-            <el-table-column prop="writer" label="作者" min-width="10" align="left"></el-table-column>
-            <el-table-column prop="column" label="栏目" min-width="10" align="left"></el-table-column>
-            <el-table-column prop="" label="操作" width="150" align="left">
-                <template slot-scope="scope">
-                    <el-button size="mini" @click="edit(scope.row.id)">编辑</el-button>
-                    <el-button size="mini" type="danger" @click="articleDelete(scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+  <div class="article-list" v-loading.fullscreen.lock="fullscreenLoading" :element-loading-text="text">
+    <div class="btn-group">
+      <el-button-group>
+        <el-select v-model="column" placeholder="请选择" size='small' class="column-select" popper-class='column-select-content' @change='changeColumn'>
+          <el-option label="全部" value=""></el-option>
+          <el-option v-for="item in columns" :key="item._id" :label="item.cname" :value="item._id"></el-option>
+        </el-select>
+      </el-button-group>
+      <el-button-group>
+        <el-button type="primary" :plain="tag != 'normal'" size="small" @click="changeTag('normal')">
+          <span class="hidden-lg-and-up">
+            <i class="iconfont icon-normal font12"></i>
+          </span>
+          <span class="hidden-md-and-down">正常文章</span>
+        </el-button>
+        <el-button type="primary" :plain="tag != 'draft'" size="small" @click="changeTag('draft')">
+          <span class="hidden-lg-and-up">
+            <i class="iconfont icon-draft font12"></i>
+          </span>
+          <span class="hidden-md-and-down">草稿文章</span>
+        </el-button>
+        <el-button type="primary" :plain="tag != 'trash'" size="small" @click="changeTag('trash')">
+          <span class="hidden-lg-and-up">
+            <i class="iconfont icon-recyclebin font12"></i>
+          </span>
+          <span class="hidden-md-and-down">回收站</span>
+        </el-button>
+      </el-button-group>
+      <el-button-group>
+        <el-button type="success" size="small" @click="edit('new')">
+          <span class="hidden-lg-and-up">
+            <i class="iconfont icon-new font12"></i>
+          </span>
+          <span class="hidden-md-and-down">新建文章</span>
+        </el-button>
+        <el-button type="warning" size="small" @click="MultiEditDialog()">
+          <span class="hidden-lg-and-up">
+            <i class="iconfont icon-edit font12"></i>
+          </span>
+          <span class="hidden-md-and-down">批量编辑</span>
+        </el-button>
+      </el-button-group>
+      <el-button-group style="padding-top: 1px;">
+        <el-input placeholder="请输入搜索内容" size="small" v-model="searchContent" class="hidden-xs-only search-input" @keyup.enter="search">
+          <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+        </el-input>
+      </el-button-group>
     </div>
+    <el-dialog title="批量修改" :visible.sync="MultiEditControl" width="370px" center>
+      <div>
+        <el-form ref="form" label-width="80px">
+          <el-form-item label="文章标签">
+            <el-select v-model="MultiEditValue.flag">
+              <el-option v-for="item in MultiEditField.flag" :key="item.tag" :label="item.name" :value="item.tag"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="栏目">
+            <el-select v-model="MultiEditValue.column">
+              <el-option v-for="item in MultiEditField.column" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="MultiEditCancel">取 消</el-button>
+        <el-button type="primary" @click="MultiEdit">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-table ref="multipleTable" :data="articleList" size="mini" border stripe height="table-style" class="table-style" @selection-change="getRow">
+      <el-table-column type="selection" width="40" align="left"></el-table-column>
+      <el-table-column prop="title" label="文章标题" min-width="20" align="left" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="flag" label="标签" min-width="10" align="left"></el-table-column>
+      <el-table-column prop="publicDate" label="发布时间" min-width="15" align="left">
+        <template slot-scope="scope">
+          <span>{{scope.row.publicDate?scope.row.publicDate:'未发布'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="writer" label="作者" min-width="10" align="left"></el-table-column>
+      <el-table-column prop="column.cname" label="栏目" min-width="10" align="left"></el-table-column>
+      <el-table-column prop="" label="操作" width="240" align="left">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="edit(scope.row._id)">编辑</el-button>
+          <el-button size="mini" type="success" :disabled="scope.row.tag == 'normal'" @click="articlePublic(scope.row._id)"> 发布</el-button>
+          <el-button size="mini" type="danger" :disabled="scope.row.tag == 'trash'" @click="articleDelete(scope.row._id)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 <style lang="less">
 .article-list {
@@ -113,26 +112,9 @@
 export default {
   data() {
     return {
-      type: "normal",
-      columnId: "",
-      column: [
-        {
-          columnName: "全部",
-          columnId: 0
-        },
-        {
-          columnName: "服务",
-          columnId: 1
-        },
-        {
-          columnName: "案例",
-          columnId: 2
-        },
-        {
-          columnName: "关于",
-          columnId: 3
-        }
-      ],
+      tag: "normal",
+      column: "",
+      columns: [],
       searchContent: "",
       articleList: [],
       err: "",
@@ -181,115 +163,86 @@ export default {
     };
   },
   created() {
-    this.columnId = parseInt(this.$route.query.columnId) || 0;
-    this.update("normal");
+    this.column = this.$route.query.column ? this.$route.query.column : "";
+    this.$axios_wrapper("columns.list").then(res => {
+      this.columns = res.data.columns;
+    });
+    this.update();
+  },
+  watch: {
+    column() {
+      this.update();
+    },
+    tag() {
+      this.update();
+    }
   },
   methods: {
-    changeColumn(value) {
-      this.update(this.type);
+    changeColumn(column) {
+      this.column = column;
     },
-    update(type) {
-      var _this = this;
-      _this.type = type;
-      _this.axios
-        .get("/article/list", {
-          type,
-          columnId: _this.columnId
-        })
-        .then(res => {
-          _this.articleList = res.data.articleList;
-          _this.fullscreenLoading = false;
-        })
-        .catch(err => {
-          _this.err = err.toString();
-          _this.fullscreenLoading = false;
-        });
+    changeTag(tag) {
+      this.tag = tag;
+    },
+    update() {
+      this.$axios_wrapper("articles.list", null, {
+        params: { tag: this.tag, column: this.column }
+      }).then(res => {
+        this.articleList = res.data.articles;
+        this.fullscreenLoading = false;
+      });
     },
     edit(id) {
-      var _this = this;
-      _this.$router.push({
+      this.$router.push({
         path: `/article/edit/${id}`
       });
     },
-    articleDelete(row) {
-      var _this = this;
-      _this
-        .$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "error"
-        })
+    articlePublic(_id) {
+      this.$confirm("此操作将发布该文章, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "error"
+      })
         .then(() => {
-          _this.deleteAxios([row.id]);
+          this.$axios_wrapper("articles.public", { _id }).then(res => {
+            this.update();
+            this.$message({
+              type: "success",
+              message: "已成功发布"
+            });
+          });
         })
-        .catch(() => {
-          _this.$message({
+        .catch(err => {
+          this.$message({
+            type: "info",
+            message: "已取消发布"
+          });
+        });
+    },
+    articleDelete(_id) {
+      this.$confirm("此操作将删除该文章, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "error"
+      })
+        .then(() => {
+          this.$axios_wrapper("articles.distory", { _id }).then(res => {
+            this.update();
+            this.$message({
+              type: "success",
+              message: "已成功删除"
+            });
+          });
+        })
+        .catch(err => {
+          this.$message({
             type: "info",
             message: "已取消删除"
           });
         });
     },
-    deleteAxios(ids) {
-      var _this = this;
-      _this.fullscreenLoading = true;
-      _this.axios
-        .delete("/article/delete", {
-          data: {
-            ids
-          }
-        })
-        .then(res => {
-          _this.fullscreenLoading = false;
-          if (res.data.result) {
-            let arr = _this.articleList.filter(item => {
-              return ids.indexOf(item.id) == -1;
-            });
-            _this.articleList = arr;
-            _this.$message({
-              type: "success",
-              message: "删除成功"
-            });
-          } else {
-            _this.$message({
-              type: "error",
-              message: "删除失败"
-            });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          _this.fullscreenLoading = false;
-          _this.$message({
-            type: "error",
-            message: "删除失败"
-          });
-        });
-    },
     search() {
       console.log("nih");
-    },
-    MultiDelete() {
-      var _this = this;
-      _this.ids.length > 0
-        ? _this
-            .$confirm(`此操作将删除这些文章回收站, 是否继续?`, "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "error"
-            })
-            .then(() => {
-              _this.deleteAxios(_this.ids);
-            })
-            .catch(() => {
-              _this.$message({
-                type: "info",
-                message: "已取消删除"
-              });
-            })
-        : _this.$message({
-            type: "wraning",
-            message: "请选择文章"
-          });
     },
     getRow(selection) {
       let ids = [];
