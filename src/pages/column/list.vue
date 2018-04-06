@@ -1,12 +1,30 @@
 <template>
-    <div class="column">
-        <div class="column-bar">
-            <el-button type="success" size='mini' @click="columnEdit('new')">新增顶级栏目</el-button>
-        </div>
-        <div class="column-body">
-            <el-tree :data="column" accordion :props="defaultProps" node-key="columnId" :default-expand-all='false' :expand-on-click-node="false" :render-content="renderContent"></el-tree>
-        </div>
+  <div class="column">
+    <div class="column-bar">
+      <el-button type="success" size='mini' @click="columnEdit('new')">新增顶级栏目</el-button>
     </div>
+    <div class="column-body">
+      <el-tree :data="columns" accordion :props="defaultProps" node-key="columnId" :default-expand-all='false' :expand-on-click-node="false">
+        <span class="node_content" slot-scope="{ node, data }">
+          <span>
+            <span class="color-gray">{{data.cname}}</span>
+            <!-- <span class="color-primary">(ID: {data.columnId}) </span>
+            <span class="color-success">[文档: {data.total}]</span> -->
+          </span>
+          <span>
+            <el-button type="text" size="mini" class="color-success" @click="()=> toArticleList(data)"> 预览
+            </el-button>
+            <el-button type="text" size="mini" class="color-primary" @click="()=> columnEdit('new', data)"> 新增子类
+            </el-button>
+            <el-button type="text" size="mini" class="color-warning" @click="()=> columnEdit('edit', data)"> 修改
+            </el-button>
+            <el-button type="text" size="mini" class="color-danger" @click="()=> columnRemove(node, data)"> 删除
+            </el-button>
+          </span>
+        </span>
+      </el-tree>
+    </div>
+  </div>
 </template>
 <style lang="less">
 .column {
@@ -36,32 +54,32 @@
 }
 </style>
 <script>
-let id = 1000;
-
+import toTree from "@/utils/toTree.js";
 export default {
   data() {
     return {
-      column: [],
+      columns: [],
       defaultProps: {
         children: "children"
       }
     };
   },
-  created: function() {
-    var _this = this;
-    _this.axios.get("/column/list").then(res => {
-      _this.column = res.data.columnList;
+  mounted: function() {
+    this.$axios_wrapper("columns.list").then(res => {
+      this.columns = toTree(res.data.columns, "_id", "parentColumn");
     });
   },
   methods: {
-    columnEdit(type, data) {
-      var id;
-      data ? (id = data.columnId) : (id = 0);
-      this.$router.push(`/column/${type}/${id}`);
+    columnEdit(id, data) {
+      id == "new"
+        ? this.$router.push(
+            `/column/edit/new?parentColumnId=${data ? data._id : ""}`
+          )
+        : this.$router.push(`/column/edit/${data._id}`);
     },
     toArticleList(data) {
-      var id = data.columnId;
-      this.$router.push({ path: "/article", query: { columnId: id } });
+      var id = data._id;
+      this.$router.push({ path: "/article", query: { column: id } });
     },
     columnRemove(node, data) {
       var _this = this;
@@ -102,51 +120,6 @@ export default {
             message: "取消删除~~"
           });
         });
-    },
-    renderContent(h, { node, data, store }) {
-      return (
-        <span class="node_content">
-          <span>
-            <span class="color-gray">{data.columnName} </span>
-            <span class="color-primary">(ID: {data.columnId}) </span>
-            <span class="color-success">[文档: {data.total}]</span>
-          </span>
-          <span>
-            <el-button
-              type="text"
-              size="mini"
-              class="color-success"
-              on-click={() => this.toArticleList(data)}
-            >
-              预览
-            </el-button>
-            <el-button
-              type="text"
-              size="mini"
-              class="color-primary"
-              on-click={() => this.columnEdit("new", data)}
-            >
-              新增子类
-            </el-button>
-            <el-button
-              type="text"
-              size="mini"
-              class="color-warning"
-              on-click={() => this.columnEdit("edit", data)}
-            >
-              修改
-            </el-button>
-            <el-button
-              type="text"
-              size="mini"
-              class="color-danger"
-              on-click={() => this.columnRemove(node, data)}
-            >
-              删除
-            </el-button>
-          </span>
-        </span>
-      );
     }
   }
 };
