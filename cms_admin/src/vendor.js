@@ -1,0 +1,7 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Vuex from 'vuex'
+import Axios from 'axios'
+import VueAxios from 'vue-axios'
+import Mock from 'mockjs'
+import ElementUI from 'element-ui'
